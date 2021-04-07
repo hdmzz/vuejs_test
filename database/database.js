@@ -5,7 +5,7 @@ exports.databaseConnect = () => {
         host: "localhost",
         user: "root",
         password: "",
-        database: "user"
+        database: "groupomania"
         });
         return db;
 }
