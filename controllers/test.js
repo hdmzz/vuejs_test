@@ -54,9 +54,10 @@ exports.connexionTest = (req, res) => {
         console.log('Connecté à la base de données')
     })
     connection.query(sql, function(error, user) {
+        console.log("requete sql")
         if (error) throw error;
         const userPassword = user[0].password;
-        console.log('REGARDE ICI');
+        console.log('Userpassword');
         console.log(userPassword);
         //on compare les mot de passe avec bcrypt
         bcrypt.compare(req.body.password, userPassword)
