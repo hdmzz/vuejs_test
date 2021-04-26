@@ -1,9 +1,12 @@
 const express = require('express');
 const app = express();
-const testRoutes = require('./routes/test');
+const usersRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
-const bodyParser = require('body-parser');
+const accountRoutes = require('./routes/account');
+const adminRoutes = require('./routes/admin');
+const commentRoutes = require('./routes/comment'); 
 
+const path = require('path');
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,13 +15,19 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
-app.use(bodyParser.urlencoded())
-app.use(bodyParser.json());
 
+
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json());
+
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 //Routes
-app.use('/api/test', testRoutes);
+app.use('/api/test', usersRoutes);
 app.use('/api/post', postRoutes);
+app.use('/api/account', accountRoutes);
+app.use('/api/comment', commentRoutes);
+app.use('/api/admin', adminRoutes);
 
 
 module.exports = app;
