@@ -1,4 +1,4 @@
-const { json } = require('body-parser');
+const fs = require('fs');
 const mysql = require('mysql');
 const db = require('../database/database');
 const connection = db.databaseConnect();
@@ -36,11 +36,27 @@ exports.getPosts = (req, res) => {
 
 exports.deletePost = (req, res) => {
     const postId = req.params.id;
-    const sql = 'DELETE FROM post WHERE post_id = ?';
-    connection.query(sql, postId, function(err, result){
-        if(err) throw err;
-        return res.status(200).json({message: 'Post supprimé'});
+    const sqlGet = 'SELECT imageurl FROM post WHERE post_id = ?';
+    const sqlDlt = 'DELETE FROM post WHERE post_id = ?';
+    connection.query(sqlGet, postId, function(err, result){
+        if(err)console.log(err);
+        const imageUrl = result[0].imageurl.split('/images/')[1];
+        if(imageUrl == undefined){
+            console.log('pas dimage a suppr')
+            deleteOne()
+        } else if(imageUrl !== undefined){
+            console.log('suppresion dune image')
+            fs.unlink(`images/${imageUrl}`, () => {
+                deleteOne()
+            })
+        }
     })
+    const deleteOne = () =>{
+        connection.query(sqlDlt, postId, function(err, result){
+            if(err) throw err;
+            return res.status(200).json({message: 'Post supprimé'});
+        })
+    } 
 };
 
 exports.getOnePost = (req, res) => {
