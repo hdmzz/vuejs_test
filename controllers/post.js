@@ -40,12 +40,13 @@ exports.deletePost = (req, res) => {
     const sqlDlt = 'DELETE FROM post WHERE post_id = ?';
     connection.query(sqlGet, postId, function(err, result){
         if(err)console.log(err);
-        const imageUrl = result[0].imageurl.split('/images/')[1];
-        if(imageUrl == undefined){
+        const fileUrl = result[0].imageurl;
+        if(fileUrl == null){
             console.log('pas dimage a suppr')
             deleteOne()
-        } else if(imageUrl !== undefined){
+        } else if(fileUrl !== null){
             console.log('suppresion dune image')
+            const imageUrl = result[0].imageurl.split('/images/')[1]
             fs.unlink(`images/${imageUrl}`, () => {
                 deleteOne()
             })
