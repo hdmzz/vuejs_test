@@ -8,6 +8,9 @@ const commentRoutes = require('./routes/comment');
 
 const path = require('path');
 
+const helmet = require('helmet');
+const xss = require('xss-clean');
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -16,11 +19,16 @@ app.use((req, res, next) => {
     next();
 });
 
-
-app.use(express.urlencoded({ extended: true }))
+//Body Parser
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//gestion des images
 app.use("/images", express.static(path.join(__dirname, "images")));
+
+//Protection des headers avec helmet et protection contre les XSS
+app.use(helmet());
+app.use(xss());
 
 //Routes
 app.use('/api/test', usersRoutes);

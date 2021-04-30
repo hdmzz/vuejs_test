@@ -6,6 +6,6 @@ const dlt = require('../middleware/delete');
 
 router.post('/createComment', auth, commentCtrl.createComment);
 router.get('/getComments/:id', auth, commentCtrl.getComments);
-
+router.delete('/:id', auth, dlt.deleteCommentAuth, commentCtrl.deleteComment);
 
 module.exports = router;

@@ -3,6 +3,7 @@ const db = require('../database/database');
 const connection = db.databaseConnect();
 
 module.exports = (req, res, next) => {
+    try {
         //on récupère l'id present dans le token 
         const token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
@@ -20,4 +21,7 @@ module.exports = (req, res, next) => {
                 return res.status(401).json({message: 'non authorisé'})
             }
         })
+    } catch (error) {
+        console.log(error);
+    }
 };
