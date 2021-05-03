@@ -4,7 +4,8 @@ const multer = require('multer');
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
-    'image/png': 'png'
+    'image/png': 'png',
+    'image/gif': 'gif'
 };
 
 // Lieu d'enregistrement et nom du fichier
@@ -18,6 +19,10 @@ const storage = multer.diskStorage({
         callback(null, name + Date.now() + '.' + extension);
     }
 });
+const maxSize = 1 * 1024 * 1024; // 1MB
 
-module.exports = multer({ storage }).single('file');
+module.exports = multer({
+    storage,
+    limits: {fileSize: maxSize}
+}).single('file');
 

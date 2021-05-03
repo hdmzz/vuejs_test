@@ -1,9 +1,9 @@
-const mysql = require('mysql');
 const db = require('../database/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const connection = db.databaseConnect();
 
-exports.createUser = (req, res, next) => {
+exports.createUser = (req, res) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = {
@@ -15,11 +15,11 @@ exports.createUser = (req, res, next) => {
         return user 
     })
     .then(user => {
-        const connection = db.databaseConnect();
         const values = [[user.lastName, user.firstName, user.email, user.password]];
         const sql = `INSERT INTO users (lastName, firstName, email, password ) VALUES ?`;
         connection.query(sql, [values],function(err, result){
             if (err){
+                console.log(err)
                 return res.status(401).json(err)
             } else {
                 console.log('table implémentée');
@@ -32,9 +32,9 @@ exports.createUser = (req, res, next) => {
 };
 
 exports.connexionUser = (req, res) => {
-    const connection = db.databaseConnect();
     const email = req.body.email;
     console.log(email);
+    console.log(process.env.DATABASE_PASSWORD + ' process env')
     const sql = 'SELECT * FROM users WHERE email= ?';
     connection.query(sql, email, function(error, user) {
         if(error) throw error;

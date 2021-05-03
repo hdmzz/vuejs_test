@@ -15,6 +15,6 @@ module.exports = (req, res, next) => {
             next();
         }
     } catch {
-        res.status(401).json({message: 'token invalide'});
+        res.status(403).json({message: 'token invalide'});
     }
 };

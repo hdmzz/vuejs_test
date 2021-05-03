@@ -14,6 +14,9 @@ exports.createPost = (req, res) => {
         }
         const userId = req.body.userId;
         const comment = req.body.comment;
+        if(comment == null  && imageUrl == null){
+            return res.status(400).json({message: 'Il faut remplir au moins un champ'})
+        }
         console.log(imageUrl)
         const sql = 'INSERT INTO post (user_id, comment, imageurl) VALUES ?';
         const values = [[userId, comment, imageUrl]]
@@ -32,7 +35,9 @@ exports.getPosts = (req, res) => {
     try{
         const token = req.headers.authorization;
         console.log('getPosts CTRL',token);
-        // On rcupère les posts de
+        console.log(process.env.DATABASE_PASSWORD + ' process env')
+
+        // On récupère les posts de
         connection.query(`SELECT lastName, firstName, comment, imageurl, post_date, post_id, id FROM users INNER JOIN post ON users.id = post.user_id ORDER BY post_id DESC`, function(err, result){
             if (err) throw err;
             console.log('Posts récupérés');

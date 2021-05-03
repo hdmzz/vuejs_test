@@ -1,3 +1,5 @@
+//Dotenv config pour les données sensibles
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const usersRoutes = require('./routes/users');
@@ -10,6 +12,7 @@ const path = require('path');
 
 const helmet = require('helmet');
 const xss = require('xss-clean');
+
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -30,8 +33,10 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(helmet());
 app.use(xss());
 
+
+
 //Routes
-app.use('/api/test', usersRoutes);
+app.use('/api/users', usersRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/account', accountRoutes);
 app.use('/api/comment', commentRoutes);

@@ -5,16 +5,20 @@ exports.createComment = (req, res) => {
     const userId = req.body.userId;
     const comment = req.body.comment;
     const postId = req.body.postId;
-    console.log(req.body)
-    const values = [[postId, userId, comment]]
-    const sql = "INSERT INTO comment (postId, userId, comment) VALUES ?"
-    connection.query(sql, [values], function(err, result){
-        if(err){
-            throw err
-        }
-        console.log('commentaire ajouté' )
-        return res.status(200).json({message: 'commentaire ajouté'})
-    })
+    console.log(req.body);
+    const values = [[postId, userId, comment]];
+    if(comment == null){
+        return res.status(401).json({message: 'Le champ doit contenir un message'})
+    }else {
+        const sql = "INSERT INTO comment (postId, userId, comment) VALUES ?"
+        connection.query(sql, [values], function(err, result){
+            if(err){
+                throw err
+            }
+            console.log('commentaire ajouté' )
+            return res.status(200).json({message: 'commentaire ajouté'})
+        })
+    }
 };
 
 exports.getComments = (req, res) => {
