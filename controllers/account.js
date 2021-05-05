@@ -10,7 +10,7 @@ exports.getAccountInfo = (req, res) => {
         if (err) throw err;
         console.log(result)
         return res.status(200).json({result})
-        })
+    })
 };
 
 exports.deleteAccount = (req, res) => {
@@ -19,7 +19,6 @@ exports.deleteAccount = (req, res) => {
     connection.query(sql, id, function(err, result){
         if (err) throw err;
         console.log(result)
-        return res.status(200).json({message: 'Le compte et les publications associées ont étés supprimé'})
+        return res.status(200).json({message: 'Le compte et les publications associées ont étés supprimés'})
     })
-
 }; 

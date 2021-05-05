@@ -28,7 +28,9 @@ exports.createUser = (req, res) => {
             }
             })
         })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => {
+        return res.status(500).json(error)
+    });
 };
 
 exports.connexionUser = (req, res) => {
@@ -55,7 +57,7 @@ exports.connexionUser = (req, res) => {
                 isadmin: user[0].isadmin,
                 token: jwt.sign(
                     {userId: user[0].id},
-                    'RANDOM_TOKEN_SECRET',
+                    process.env.TOKEN_KEY,
                     {expiresIn: '8h'}
                 )
             });

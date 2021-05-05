@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
         callback(null, name + Date.now() + '.' + extension);
     }
 });
-const maxSize = 1 * 1024 * 1024; // 1MB
+const maxSize = 10 * 1024 * 1024; 
 
 module.exports = multer({
     storage,

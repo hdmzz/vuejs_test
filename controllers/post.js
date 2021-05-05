@@ -33,11 +33,7 @@ exports.createPost = (req, res) => {
 
 exports.getPosts = (req, res) => {
     try{
-        const token = req.headers.authorization;
-        console.log('getPosts CTRL',token);
-        console.log(process.env.DATABASE_PASSWORD + ' process env')
-
-        // On récupère les posts de
+        // On récupère les posts
         connection.query(`SELECT lastName, firstName, comment, imageurl, post_date, post_id, id FROM users INNER JOIN post ON users.id = post.user_id ORDER BY post_id DESC`, function(err, result){
             if (err) throw err;
             console.log('Posts récupérés');
@@ -54,13 +50,11 @@ exports.deletePost = (req, res) => {
         const sqlGet = 'SELECT imageurl FROM post WHERE post_id = ?';
         const sqlDlt = 'DELETE FROM post WHERE post_id = ?';
         connection.query(sqlGet, postId, function(err, result){
-            if(err)console.log(err);
+            if(err) throw err;
             const fileUrl = result[0].imageurl;
             if(fileUrl == null){
-                console.log('pas dimage à suppr')
                 deleteOne()
             } else if(fileUrl !== null){
-                console.log('suppression image')
                 const imageUrl = result[0].imageurl.split('/images/')[1]
                 fs.unlink(`images/${imageUrl}`, () => {
                     deleteOne()
@@ -81,7 +75,6 @@ exports.deletePost = (req, res) => {
 exports.getOnePost = (req, res) => {
     try{
         const postId = req.params.id;
-        console.log('recuperation dun seul post' + postId)
         const sql = "SELECT users.firstName, users.lastName, post.comment, post.imageurl FROM `post` INNER JOIN users ON post.user_id = users.id WHERE post.post_id = ?"
         connection.query(sql, postId, function(err, result){
             if(err) throw err;

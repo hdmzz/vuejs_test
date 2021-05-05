@@ -6,7 +6,7 @@ exports.deletePostAuth = (req, res, next) => {
     try {
         //on récupère l'id present dans le token 
         const token = req.headers.authorization.split(' ')[1];
-        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+        const decodedToken = jwt.verify(token, process.env.TOKEN_KEY);
         const userId = decodedToken.userId;
         // on va récupérer l'userId présent dans le post et le comparer à l'id du token 
         const postId = req.params.id;
@@ -32,7 +32,7 @@ exports.deleteCommentAuth = (req, res, next) => {
     try {
         //on récupère l'id present dans le token 
         const token = req.headers.authorization.split(' ')[1];
-        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+        const decodedToken = jwt.verify(token, process.env.TOKEN_KEY);
         const userId = decodedToken.userId;
         //Récupération de l'id present dans le commentaire et comparaison avec celui du token
         const commentId = req.params.id;
